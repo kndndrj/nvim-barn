@@ -1,60 +1,73 @@
-local config = require("tmux.configuration")
-local copy = require("tmux.copy")
-local log = require("tmux.log")
-local navigation = require("tmux.navigation")
+local navigate = require("tmux.navigate")
 local resize = require("tmux.resize")
-local tmux = require("tmux.wrapper.tmux")
+local hosts = require("tmux.hosts")
 
-local options = {
-    copy_sync = {
-        enable = true,
-    },
-    navigation = {
-        enable_default_keybindings = true,
-    },
-    resize = {
-        enable_default_keybindings = true,
-    },
-}
+---@class NavHost
+---@field detect fun(): boolean
+---@field is_border fun(dir: NavDirection): boolean
+---@field is_zoomed fun(): boolean
+---@field change_pane fun(dir: NavDirection)
+---@field resize fun(dir: NavDirection, step: integer)
 
-local M = {
-    move_left = navigation.to_left,
-    move_bottom = navigation.to_bottom,
-    move_top = navigation.to_top,
-    move_right = navigation.to_right,
+---@type NavHost?
+local host
 
-    post_yank = copy.post_yank,
-    sync_registers = copy.sync_registers,
+local M = {}
 
-    resize_left = resize.to_left,
-    resize_bottom = resize.to_bottom,
-    resize_top = resize.to_top,
-    resize_right = resize.to_right,
-}
+function M.setup()
+    host = hosts.get()
+end
 
-function M.setup(options_, logging)
-    if options_ then
-        for k, v in pairs(options_) do
-            options[k] = v
-        end
+-- Navigation
+function M.move_left()
+    if not host then
+        return
     end
+    navigate.to(host, "left")
+end
+function M.move_down()
+    if not host then
+        return
+    end
+    navigate.to(host, "down")
+end
+function M.move_up()
+    if not host then
+        return
+    end
+    navigate.to(host, "up")
+end
+function M.move_right()
+    if not host then
+        return
+    end
+    navigate.to(host, "right")
+end
 
-    log.setup()
-
-    log.debug("setup tmux wrapper")
-    tmux.setup()
-
-    log.debug("setup config")
-    config.setup(options, logging)
-
-    log.debug("setup copy")
-    copy.setup()
-
-    log.debug("setup navigate")
-    navigation.setup()
-
-    log.debug("setup resize")
-    resize.setup()
+-- Resizing
+function M.resize_left()
+    if not host then
+        return
+    end
+    resize.to(host, "left")
+end
+function M.resize_down()
+    if not host then
+        return
+    end
+    resize.to(host, "down")
+end
+function M.resize_up()
+    if not host then
+        return
+    end
+    resize.to(host, "up")
+end
+function M.resize_right()
+    if not host then
+        return
+    end
+    resize.to(host, "right")
 end
 
 return M
