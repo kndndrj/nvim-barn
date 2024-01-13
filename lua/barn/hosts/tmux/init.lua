@@ -1,8 +1,6 @@
 local border = require("barn.hosts.tmux.border")
 local execute = require("barn.hosts.tmux.execute")
 
-local log = require("barn.log")
-
 local M = {}
 
 ---Returns true if the host is tmux.
@@ -27,12 +25,8 @@ end
 ---@param direction NavDirection
 ---@return boolean
 function M.is_border(direction)
-    log.debug("is_border: ", direction or "nil")
-
     local id = get_current_pane_id()
     local result = border.check(id, direction)
-
-    log.debug("is_border > ", result or "false")
 
     return result
 end

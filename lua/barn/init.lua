@@ -1,6 +1,7 @@
 local navigate = require("barn.navigate")
 local resize = require("barn.resize")
 local hosts = require("barn.hosts")
+local config = require("barn.config")
 
 ---@class NavHost
 ---@field detect fun(): boolean
@@ -14,60 +15,63 @@ local host
 
 local M = {}
 
-function M.setup()
-    host = hosts.get()
+---@param cfg? Config
+function M.setup(cfg)
+  config.set(cfg or {})
+
+  host = hosts.get()
 end
 
 -- Navigation
 function M.move_left()
-    if not host then
-        return
-    end
-    navigate.to(host, "left")
+  if not host then
+    return
+  end
+  navigate.to(host, "left")
 end
 function M.move_down()
-    if not host then
-        return
-    end
-    navigate.to(host, "down")
+  if not host then
+    return
+  end
+  navigate.to(host, "down")
 end
 function M.move_up()
-    if not host then
-        return
-    end
-    navigate.to(host, "up")
+  if not host then
+    return
+  end
+  navigate.to(host, "up")
 end
 function M.move_right()
-    if not host then
-        return
-    end
-    navigate.to(host, "right")
+  if not host then
+    return
+  end
+  navigate.to(host, "right")
 end
 
 -- Resizing
 function M.resize_left()
-    if not host then
-        return
-    end
-    resize.to(host, "left")
+  if not host then
+    return
+  end
+  resize.to(host, "left")
 end
 function M.resize_down()
-    if not host then
-        return
-    end
-    resize.to(host, "down")
+  if not host then
+    return
+  end
+  resize.to(host, "down")
 end
 function M.resize_up()
-    if not host then
-        return
-    end
-    resize.to(host, "up")
+  if not host then
+    return
+  end
+  resize.to(host, "up")
 end
 function M.resize_right()
-    if not host then
-        return
-    end
-    resize.to(host, "right")
+  if not host then
+    return
+  end
+  resize.to(host, "right")
 end
 
 return M

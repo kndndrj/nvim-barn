@@ -1,4 +1,3 @@
-local log = require("barn.log")
 local execute = require("barn.hosts.tmux.execute")
 
 ---@return string layout
@@ -23,7 +22,6 @@ local function parse_window_layout(layout)
         })
     end
     if #panes == 0 then
-        log.error("window_layout returned no valid panes")
         return nil
     end
 
@@ -31,7 +29,6 @@ local function parse_window_layout(layout)
     local height = layout:match("^%w+,%d+x(%d+)")
 
     if width == nil and height == nil then
-        log.error("window_layout returned invalid format")
         return nil
     end
 
@@ -40,8 +37,6 @@ local function parse_window_layout(layout)
         height = tonumber(height),
         panes = panes,
     }
-
-    log.debug("parse > ", result)
 
     return result
 end
@@ -64,14 +59,11 @@ local direction_checks = {
 local M = {}
 
 local function get_pane(id, panes)
-    log.debug("get_pane: ", id)
     for _, pane in pairs(panes) do
         if pane.id == id then
-            log.debug("get_pane > ", pane)
             return pane
         end
     end
-    log.debug("get_pane > nil")
     return nil
 end
 
@@ -80,17 +72,13 @@ end
 ---@param direction NavDirection
 ---@return boolean
 function M.check(pane_id, direction)
-    log.debug("check_is_border: ", { pane_id, direction })
-
     local layout = parse_window_layout(get_window_layout())
     if layout == nil then
-        log.debug("check_is_border > nil")
         return false
     end
 
     local pane = get_pane(pane_id, layout.panes)
     if pane == nil then
-        log.debug("check_is_border > nil")
         return false
     end
 
@@ -99,7 +87,6 @@ function M.check(pane_id, direction)
         return check(layout, pane)
     end
 
-    log.debug("check_is_border > nil")
     return false
 end
 
