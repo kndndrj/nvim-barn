@@ -2,6 +2,7 @@ local navigate = require("barn.navigate")
 local resize = require("barn.resize")
 local hosts = require("barn.hosts")
 local config = require("barn.config")
+local Mapper = require("barn.mapper")
 
 ---@class NavHost
 ---@field detect fun(): boolean
@@ -20,6 +21,12 @@ function M.setup(cfg)
   config.set(cfg or {})
 
   host = hosts.get()
+  if not host then
+    return
+  end
+
+  --- create a mapper
+  Mapper:new(host)
 end
 
 -- Navigation
