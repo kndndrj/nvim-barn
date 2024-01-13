@@ -21,12 +21,9 @@ function M.setup(cfg)
   config.set(cfg or {})
 
   host = hosts.get()
-  if not host then
-    return
-  end
 
   --- create a mapper
-  Mapper:new(host)
+  Mapper:new(host, config.get().mappings)
 end
 
 -- Navigation

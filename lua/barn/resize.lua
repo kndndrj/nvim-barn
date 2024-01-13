@@ -8,15 +8,15 @@ local function is_host_target(host, direction)
   return not host.is_border(direction) or nvim.is_only_window(direction)
 end
 
----@type table<NavDirection, fun(host: NavHost)>
+---@type table<NavDirection, fun(host: NavHost?)>
 local actions = {}
 
----@param host NavHost
+---@param host? NavHost
 function actions.left(host)
   local cfg = config.get()
 
   local is_border = nvim.is_border("right")
-  if is_border and is_host_target(host, "right") then
+  if host and is_border and is_host_target(host, "right") then
     host.resize("left", cfg.resize.resize_step_x)
   elseif is_border then
     nvim.resize("left", cfg.resize.resize_step_x)
@@ -25,12 +25,12 @@ function actions.left(host)
   end
 end
 
----@param host NavHost
+---@param host? NavHost
 function actions.down(host)
   local cfg = config.get()
 
   local is_border = nvim.is_border("down")
-  if is_border and is_host_target(host, "down") then
+  if host and is_border and is_host_target(host, "down") then
     host.resize("down", cfg.resize.resize_step_y)
   elseif is_border then
     nvim.resize("down", cfg.resize.resize_step_y)
@@ -39,12 +39,12 @@ function actions.down(host)
   end
 end
 
----@param host NavHost
+---@param host? NavHost
 function actions.up(host)
   local cfg = config.get()
 
   local is_border = nvim.is_border("down")
-  if is_border and is_host_target(host, "down") then
+  if host and is_border and is_host_target(host, "down") then
     host.resize("up", cfg.resize.resize_step_y)
   elseif is_border then
     nvim.resize("up", cfg.resize.resize_step_y)
@@ -53,12 +53,12 @@ function actions.up(host)
   end
 end
 
----@param host NavHost
+---@param host? NavHost
 function actions.right(host)
   local cfg = config.get()
 
   local is_border = nvim.is_border("right")
-  if is_border and is_host_target(host, "right") then
+  if host and is_border and is_host_target(host, "right") then
     host.resize("right", cfg.resize.resize_step_x)
   elseif is_border then
     nvim.resize("right", cfg.resize.resize_step_x)
@@ -69,7 +69,7 @@ end
 
 local M = {}
 
----@param host NavHost
+---@param host? NavHost
 ---@param direction NavDirection
 function M.to(host, direction)
   local action = actions[direction]

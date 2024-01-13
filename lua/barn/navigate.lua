@@ -25,12 +25,12 @@ local function has_target(host, direction)
   return cfg.navigate.cycle_navigation and not host.is_border(opposite_directions[direction])
 end
 
----@param host NavHost
+---@param host? NavHost
 ---@param direction NavDirection
 function M.to(host, direction)
   local is_nvim_border = nvim.is_border(direction)
 
-  if is_nvim_border and has_target(host, direction) then
+  if host and is_nvim_border and has_target(host, direction) then
     host.change_pane(direction)
   elseif is_nvim_border and config.get().navigate.cycle_navigation then
     nvim.change_pane(opposite_directions[direction], 999)

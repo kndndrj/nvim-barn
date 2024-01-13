@@ -13,18 +13,25 @@ local M = {}
 ---@class Config
 ---@field navigate NavigateConfig
 ---@field resize ResizeConfig
+---@field mappings mapper_config
 
 ---@type Config
 local current_config = {
   navigate = {
-    enable_default_keybindings = false, --TODO check if this is actually needed
     cycle_navigation = true,
     persist_zoom = false,
   },
+
   resize = {
-    enable_default_keybindings = false, --TODO check if this is actually needed
     resize_step_x = 1,
     resize_step_y = 1,
+  },
+
+  mappings = {
+    disable = false,
+    key_repeat_ms = 350,
+    layer_timeout_ms = 1000,
+    prefix_key = "<C-b>",
   },
 }
 
