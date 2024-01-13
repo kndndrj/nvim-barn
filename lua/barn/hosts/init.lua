@@ -1,7 +1,7 @@
 local M = {}
 
 local hosts = {
-    require("tmux.hosts.tmux"),
+    require("barn.hosts.tmux"),
 }
 
 -- Returns a detected host

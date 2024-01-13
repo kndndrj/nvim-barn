@@ -1,7 +1,7 @@
-local border = require("tmux.hosts.tmux.border")
-local execute = require("tmux.hosts.tmux.execute")
+local border = require("barn.hosts.tmux.border")
+local execute = require("barn.hosts.tmux.execute")
 
-local log = require("tmux.log")
+local log = require("barn.log")
 
 local M = {}
 

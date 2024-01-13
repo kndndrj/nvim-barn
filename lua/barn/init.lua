@@ -1,6 +1,6 @@
-local navigate = require("tmux.navigate")
-local resize = require("tmux.resize")
-local hosts = require("tmux.hosts")
+local navigate = require("barn.navigate")
+local resize = require("barn.resize")
+local hosts = require("barn.hosts")
 
 ---@class NavHost
 ---@field detect fun(): boolean

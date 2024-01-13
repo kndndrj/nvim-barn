@@ -1,7 +1,7 @@
-local channels = require("tmux.log.channels")
+local channels = require("barn.log.channels")
 
 local function convert(...)
-    return require("tmux.log.convert").to_string(...)
+    return require("barn.log.convert").to_string(...)
 end
 
 local function log(severity, message, obj)
@@ -16,11 +16,11 @@ end
 local M = {}
 function M.setup()
     channels.add("file", function(sev, msg)
-        require("tmux.log.channels.file").write(sev, msg)
+        require("barn.log.channels.file").write(sev, msg)
     end)
 
     channels.add("notify", function(sev, msg)
-        require("tmux.log.channels.notify").create().write(sev, msg)
+        require("barn.log.channels.notify").create().write(sev, msg)
     end)
 end
 

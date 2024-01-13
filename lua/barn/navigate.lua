@@ -1,6 +1,6 @@
-local nvim = require("tmux.nvim")
-local log = require("tmux.log")
-local options = require("tmux.configuration.options")
+local nvim = require("barn.nvim")
+local log = require("barn.log")
+local options = require("barn.configuration.options")
 
 ---@alias NavDirection "left"|"down"|"up"|"right"
 

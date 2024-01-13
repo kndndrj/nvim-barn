@@ -1,8 +1,8 @@
-local log = require("tmux.log")
-local logging = require("tmux.configuration.logging")
-local options = require("tmux.configuration.options")
-local validate = require("tmux.configuration.validate")
-local tmux = require("tmux.wrapper.tmux")
+local log = require("barn.log")
+local logging = require("barn.configuration.logging")
+local options = require("barn.configuration.options")
+local validate = require("barn.configuration.validate")
+local tmux = require("barn.wrapper.tmux")
 
 local M = {
     options = options,

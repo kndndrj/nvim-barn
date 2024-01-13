@@ -8,7 +8,7 @@ function M.set(options)
         return
     end
     for index, _ in pairs(options) do
-        if require("tmux.log.severity").validate(options[index]) then
+        if require("barn.log.severity").validate(options[index]) then
             M[index] = options[index]
         end
     end

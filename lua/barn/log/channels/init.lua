@@ -1,5 +1,5 @@
-local config = require("tmux.configuration.logging")
-local severity = require("tmux.log.severity")
+local config = require("barn.configuration.logging")
+local severity = require("barn.log.severity")
 
 local M = {
     current = {},

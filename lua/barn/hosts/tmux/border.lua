@@ -1,5 +1,5 @@
-local log = require("tmux.log")
-local execute = require("tmux.hosts.tmux.execute")
+local log = require("barn.log")
+local execute = require("barn.hosts.tmux.execute")
 
 ---@return string layout
 local function get_window_layout()
