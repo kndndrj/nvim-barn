@@ -18,6 +18,7 @@ local libmodal = require("libmodal")
 ---@field private timer? table uv.timer
 ---@field private layer table libmodal.layer
 ---@field private opts mapper_config
+---@field private host? NavHost
 local Mapper = {}
 
 ---@param host? NavHost
@@ -32,7 +33,9 @@ function Mapper:new(host, opts)
 
   ---@type Mapper
   local o = {
+    host = host,
     timer = nil,
+    layer = libmodal.layer.new {},
     opts = {
       prefix_key = opts.prefix_key or "<C-b>",
       key_repeat_ms = opts.key_repeat_ms or 350,
@@ -42,8 +45,7 @@ function Mapper:new(host, opts)
   setmetatable(o, self)
   self.__index = self
 
-  o:create_layer(host)
-  o:configure_mappings()
+  o:enable_mappings()
 
   return o
 end
@@ -56,6 +58,11 @@ function Mapper:layer_enter()
 
   -- exit layer automatically after timeout
   self:layer_timeout(self.opts.layer_timeout_ms)
+  self.layer = libmodal.layer.new(self:get_keymap(self.host))
+
+  --- disable mapping to enter the layer with a prefix
+  self:disable_mappings()
+
   self.layer:enter()
 end
 
@@ -64,6 +71,9 @@ end
 function Mapper:layer_exit()
   if self.layer:is_active() then
     self.layer:exit()
+
+    --- enable mapping to enter the layer with a prefix
+    self:enable_mappings()
   end
 end
 
@@ -94,7 +104,8 @@ end
 
 ---@private
 ---@param host? NavHost
-function Mapper:create_layer(host)
+---@return table _ libmodal layer keymap
+function Mapper:get_keymap(host)
   local mappings = {
     -- moving
     h = {
@@ -169,7 +180,7 @@ function Mapper:create_layer(host)
     },
   }
 
-  self.layer = libmodal.layer.new {
+  return {
     n = mappings,
     i = mappings,
     t = mappings,
@@ -178,26 +189,20 @@ function Mapper:create_layer(host)
   }
 end
 
--- configure key mappings
-function Mapper:configure_mappings()
-  local map_options = { noremap = true, silent = true }
-
+---enable key mappings
+---@private
+function Mapper:enable_mappings()
   -- enter the layer with tmux prefix in all modes
-  vim.keymap.set("n", self.opts.prefix_key, function()
+  vim.keymap.set({ "n", "i", "t", "x", "o" }, self.opts.prefix_key, function()
     self:layer_enter()
-  end, map_options)
-  vim.keymap.set("i", self.opts.prefix_key, function()
-    self:layer_enter()
-  end, map_options)
-  vim.keymap.set("t", self.opts.prefix_key, function()
-    self:layer_enter()
-  end, map_options)
-  vim.keymap.set("x", self.opts.prefix_key, function()
-    self:layer_enter()
-  end, map_options)
-  vim.keymap.set("o", self.opts.prefix_key, function()
-    self:layer_enter()
-  end, map_options)
+  end, { noremap = true, silent = true })
+end
+
+---disable key mappings
+---@private
+function Mapper:disable_mappings()
+  -- enter the layer with tmux prefix in all modes
+  vim.keymap.del({ "n", "i", "t", "x", "o" }, self.opts.prefix_key)
 end
 
 return Mapper
